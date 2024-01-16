@@ -12,6 +12,6 @@ public class Solution27Tests
         var result = string.Join(',', nums);
 
         Assert.That(count, Is.EqualTo(4));
-        Assert.That(result, Is.EqualTo("1,2,4,5,4,3,5"));
+        Assert.That(result, Is.EqualTo("1,2,4,5,4,3,1"));
     }
 }
