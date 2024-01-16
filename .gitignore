@@ -1,0 +1,83 @@
+# use glob syntax
+syntax: glob
+
+*.obj
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.[Cc]ache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.DotSettings
+[Bb]in
+[Dd]ebug*/**
+obj/
+[Rr]elease*/**
+_ReSharper*/**
+NDependOut/**
+Source/packages/**
+[Tt]humbs.db
+[Tt]est[Rr]esult*
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
+*.resharper
+*.ncrunch*
+*.ndproj
+Source/Pangea.Admin.Web/connections.config
+Source/Pangea.Logging.Api/connections.config
+Source/Pangea.Mobile.Api/connections.config
+Source/Pangea.Partners.Api/connections.config
+Source/Pangea.Web/connections.config
+Source/Pangea.Web.Admin/wwwroot/js/widgets.js
+Source/Pangea.Web.Admin/wwwroot/js/widgets.min.js
+.DS_Store
+._.DS_Store
+.vs/
+node_modules/
+Publish/
+.idea
+
+# Created by https://www.gitignore.io/api/vim
+
+### Vim ###
+# swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
+
+# End of https://www.gitignore.io/api/vim
+Source/_NCrunch_Pangea/
+Source/UpgradeLog*.htm
+Source/Pangea.Api.Customers/App_Data/s3_GeoIP2-City.mmdb
+
+# Patch files
+*.patch
+Source/Pangea.Web.Admin/wwwroot/css/Content.css
+Source/Pangea.Web.Admin/wwwroot/js/bootstrap.js
+Source/Pangea.Web.Admin/wwwroot/js/jquery.js
+Source/Pangea.Web.Admin/wwwroot/js/modernizr.js
+
+# Local Settings Files
+*appsettings.Local.json
+*docker-compose.override.local.yml
