@@ -1,4 +1,4 @@
-namespace TestProject.Solutions.Easy;
+namespace TestProject.Solutions.Medium;
 
 public class Solution189Tests
 {
