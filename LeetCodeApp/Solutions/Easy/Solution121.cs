@@ -24,20 +24,18 @@
         var lowestPrice = prices[0];
         var profit = 0;
 
-        for (int i = 1; i < prices.Length; i++)
+        foreach (var price in prices)
         {
-
-            var price = prices[i];
+            if (price < lowestPrice)
+            {
+                lowestPrice = price;
+                continue;
+            }
 
             profit = price - lowestPrice;
-
             if (profit > maxProfit)
             {
                 maxProfit = profit;
-            }
-            else if (price < lowestPrice)
-            {
-                lowestPrice = price;
             }
         }
         return maxProfit;
