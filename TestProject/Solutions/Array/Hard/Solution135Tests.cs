@@ -103,4 +103,14 @@ public class Solution135Tests
 
         Assert.That(result, Is.EqualTo(13));
     }
+
+    [Test]
+    public void Test9()
+    {
+        var ratings = new int[] { 1, 2, 3, 5, 4, 3, 2, 1 };
+        // { 1,2,3,5,4,3,2,1} 
+        var result = Solution135.Candy(ratings);
+
+        Assert.That(result, Is.EqualTo(21));
+    }
 }

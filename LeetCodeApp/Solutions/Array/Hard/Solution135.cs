@@ -10,30 +10,99 @@
      Return the minimum number of candies you need to have to distribute the candies to the children.
 
         Input: ratings = [1,0,2]
-        Output: 5
-0 0 1
-1 0 0
-2 + 3  
+        Output: 5  
+
         Input: ratings = [1,2,2]
-        Output: 4
-0 1 0
-0 0 0
-1 + 3
-
-       Input: ratings = [1,2,2,3,4,2]
-       Output:           1+2+1+2+3+1 = 11 ?
-
-       Input: ratings = [3,2,2,3,4,2]
-       Output:           2+1+1+2+3+1 = 11 ?
-
-    29,51,87,87,72,12
-    12
-    1 2 3 3 2 1
+        Output: 4  
    */
 
     public class Solution135
     {
         public static int Candy(int[] ratings)
+        {
+            if (ratings.Length < 2)
+            {
+                return ratings.Length;
+            }
+
+            var candies = new int[ratings.Length];
+            var cR = 0;
+            int current, previous;
+
+            for (int i = 0; i < ratings.Length; i++)
+            {
+                current = ratings[i];
+                if (i > 0)
+                {
+                    previous = ratings[i - 1];
+                }
+                else
+                {
+                    previous = ratings[i];
+                }
+
+                if (current > previous)
+                {
+                    cR++;
+                }
+                else
+                {
+                    cR = 0;
+                }
+
+                candies[i] = cR;
+            }
+
+            cR = 0;
+
+            for (int i = ratings.Length - 1; i >= 0; i--)
+            {
+                if (candies[i] > cR)
+                {
+                    cR = 0;
+                    continue;
+                }
+
+                current = ratings[i];
+
+                if (i < ratings.Length - 1)
+                {
+                    previous = ratings[i + 1];
+                }
+                else
+                {
+                    previous = ratings[i];
+                }
+
+                if (current > previous)
+                {
+                    cR++;
+                    if (candies[i] > 0)
+                    {
+                        candies[i] = candies[i] > cR ? candies[i] : cR;
+                    }
+                    else
+                    {
+                        candies[i] += cR;
+                    }
+                }
+                else
+                {
+                    cR = 0;
+                }
+            }
+
+            var sum = 0;
+            foreach (var count in candies)
+            {
+                sum += count + 1;
+            }
+
+            return sum;
+        }
+
+
+        public static int CandyRecursion(int[] ratings)
         {
             if (ratings.Length < 2)
             {
