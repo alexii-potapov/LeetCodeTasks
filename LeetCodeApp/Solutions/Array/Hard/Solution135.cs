@@ -1,7 +1,4 @@
-﻿
-using System.Text;
-
-namespace LeetCodeApp.Solutions.Array.Hard
+﻿namespace LeetCodeApp.Solutions.Array.Hard
 {
     /*
      There are n children standing in a line. Each child is assigned a rating value given in the integer array ratings.
@@ -44,72 +41,62 @@ namespace LeetCodeApp.Solutions.Array.Hard
             }
 
             var sum = 0;
-            var rL = ratings[0];
-            var rC = ratings[0];
-            var rR = ratings[0];
             var cR = 0;
-            var cL = 0;
-            var s = new StringBuilder();
-            var sR = new StringBuilder("0,");
-            var sL = new StringBuilder("0,");
 
-            /* 
-               29,51,87,87,72,12
-               12
-               1 2 4 4 3 2,1
+            var leftLower = false;
+            var rightLower = false;
 
-               0 1 2 0 0 0
-               0 0 0 2 1 0
-               6+6       
-                
-               29,51,87,87,72,12,4,1
-               12
-               1 2 3 3 1 1
-             */
-
-            //Right
-            for (int i = 1; i < ratings.Length; i++)
+            for (int i = 0; i < ratings.Length; i++)
             {
-                rC = ratings[i];
-                if (rC > ratings[i - 1])
+
+                leftLower = false;
+                rightLower = false;
+
+                var rC = ratings[i];
+
+                if (i > 0 && rC > ratings[i - 1])
                 {
                     cR++;
-
+                    leftLower = true;
                 }
-                else
+
+                var result = CheckRightRating(ratings, i);
+                rightLower = result > 0;
+
+                if (!rightLower && !leftLower)
                 {
                     cR = 0;
                 }
+                else if (leftLower && rightLower)
+                {
+                    cR = cR > result ? cR : result;
+                }
+                else if (!leftLower && rightLower)
+                {
+                    cR = result;
+                }
 
-                sR.Append(cR + ",");
                 sum += cR;
             }
 
-            //Left
-            for (int i = ratings.Length - 1; i > 0; i--)
-            {
-                rC = ratings[i];
-                if (ratings[i - 1] > rC)
-                {
-                    cL++;
-
-                }
-                else
-                {
-                    cL = 0;
-                }
-
-                sum += cL;
-
-                sL.Append(cL + ",");
-            }
-
             sum += ratings.Length;
-
-            Console.WriteLine(sR.ToString());
-            Console.WriteLine(sL.ToString().Reverse());
-
             return sum;
         }
+
+        public static int CheckRightRating(int[] ratings, int index)
+        {
+
+            if (ratings.Length - 1 == index //  Last element
+                || ratings[index] <= ratings[index + 1] // Next child is smarter
+                )
+            {
+                return 0;
+            }
+
+            return 1 + CheckRightRating(ratings, index + 1);
+        }
     }
+
+
 }
+

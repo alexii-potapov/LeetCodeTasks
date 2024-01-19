@@ -46,10 +46,61 @@ public class Solution135Tests
     public void Test3()
     {
         var ratings = new int[] { 29, 51, 87, 87, 72, 12 };
-        // { 1,2,3,4,5,1,}
+
         //   1 2 3 3 2 1
         var result = Solution135.Candy(ratings);
 
         Assert.That(result, Is.EqualTo(12));
+    }
+
+    [Test]
+    public void Test4()
+    {
+        var ratings = new int[] { 1, 3, 2, 2, 1 };
+        // { 1,2,1,2,1} 
+        var result = Solution135.Candy(ratings);
+
+        Assert.That(result, Is.EqualTo(7));
+    }
+
+    [Test]
+    public void Test5()
+    {
+        var ratings = new int[] { 1, 2, 87, 87, 87, 2, 1 };
+        // { 1,2,3,1,3,2,1} 
+        var result = Solution135.Candy(ratings);
+
+        Assert.That(result, Is.EqualTo(13));
+    }
+
+
+    [Test]
+    public void Test6()
+    {
+        var ratings = new int[] { 1, 2, 3, 1, 0 };
+        // { 1,2,3,2,1} 
+        var result = Solution135.Candy(ratings);
+
+        Assert.That(result, Is.EqualTo(9));
+    }
+
+    [Test]
+    public void Test7()
+    {
+        var ratings = new int[] { 1, 6, 10, 8, 7, 3, 2 };
+        // { 1,2,3,2,1} 
+        var result = Solution135.Candy(ratings);
+
+        Assert.That(result, Is.EqualTo(18));
+    }
+
+    [Test]
+    public void Test8()
+    {
+        var ratings = new int[] { 0, 1, 2, 3, 2, 1 };
+        // { 1,2,3,4,2,1} 
+        var result = Solution135.Candy(ratings);
+
+        Assert.That(result, Is.EqualTo(13));
     }
 }
