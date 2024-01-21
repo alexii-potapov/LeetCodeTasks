@@ -55,9 +55,9 @@
                 return t;
             }
 
-            var patterns = t.ToHashSet();
 
             var indexList = new List<int>();
+            var patterns = string.Copy(t);
             var letter = ' ';
 
             var canSkipSecond = true;
@@ -66,7 +66,7 @@
                 letter = s[i];
                 //ADOBBECODEBANC contains A
 
-                if (patterns.Contains(letter))
+                if (patterns.Contains(letter, StringComparison.Ordinal))
                 {
 
                     // [0]
@@ -76,7 +76,7 @@
                     //    canSkipFirst = false;
                     //}
                     // A - removed, "BC" - left
-                    patterns.Remove(letter);
+                    patterns = patterns.Remove(patterns.IndexOf(letter), 1);
 
                 }
 
@@ -106,7 +106,7 @@
                     continue;
                 }
 
-                if (patterns.Count != 0)
+                if (patterns.Length != 0)
                 {
                     continue;
                 }
@@ -124,12 +124,12 @@
                 }
 
                 // set initial state
-                patterns = t.ToHashSet();
+                patterns = string.Copy(t);
                 // Remove second found - "B"
                 var secondIndex = indexList[1];
                 var secondLetter = s[secondIndex];
                 // new pattern set without B "AC"
-                patterns.Remove(secondLetter);
+                patterns = patterns.Remove(patterns.IndexOf(secondLetter), 1);
                 canSkipSecond = true;
                 indexList.Clear();
                 indexList.Add(secondIndex);
