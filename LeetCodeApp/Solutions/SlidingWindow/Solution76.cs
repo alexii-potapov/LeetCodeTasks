@@ -30,7 +30,7 @@
     {
         public static string MinWindow(string s, string t)
         {
-            var result = "";
+            const string result = "";
 
             if (s == t)
             {
@@ -48,98 +48,81 @@
                 return s.Contains(t[0], StringComparison.Ordinal) ? t[0].ToString() : result;
             }
 
+            var window = new Dictionary<char, List<int>>();
+            var z = t.GroupBy(c => c);
+            var pats = z.ToDictionary(g => g.Key, g => g.Count());
+            var charSet = pats.Keys.ToHashSet();
+            var startIndex = -1;
+            var endIndex = -1;
 
+            var slide = new List<int>();
 
-            if (s.Contains(t, StringComparison.Ordinal))
+            for (var i = 0; i < s.Length; i++)
             {
-                return t;
-            }
+                var letter = s[i];
 
+                if (!charSet.Contains(letter)) continue;
 
-            var indexList = new List<int>();
-            var patterns = string.Copy(t);
-            var letter = ' ';
+                var isAlreadyFound = pats.Count == 0 || !pats.TryGetValue(letter, out var count) || count == 0;
 
-            var canSkipSecond = true;
-            for (int i = 0; i < s.Length; i++)
-            {
-                letter = s[i];
-                //ADOBBECODEBANC contains A
-
-                if (patterns.Contains(letter, StringComparison.Ordinal))
+                if (isAlreadyFound)
                 {
+                    var firstLetterIndex = window[letter].First();
 
-                    // [0]
-                    indexList.Add(i);
-                    //if (indexList.Count == 1 && patterns.Contains(letter))
-                    //{
-                    //    canSkipFirst = false;
-                    //}
-                    // A - removed, "BC" - left
-                    patterns = patterns.Remove(patterns.IndexOf(letter), 1);
+                    var needToCheck = slide.First() == firstLetterIndex;
 
+                    slide.Remove(firstLetterIndex);
+                    slide.Add(i);
+
+                    if (needToCheck)
+                    {
+                        var currentLength = i - slide.First() + 1;
+                        var resultLength = endIndex - startIndex + 1;
+                        if (currentLength < resultLength)
+                        {
+                            startIndex = slide.First();
+                            endIndex = i;
+                        }
+                    }
+
+                    window[letter].RemoveAt(0);
+                    window[letter].Add(i);
                 }
+                else if (pats[letter] == 1)
+                {
+                    if (!window.TryAdd(letter, [i]))
+                    {
+                        window[letter].Add(i);
+                    }
 
-                // Use last index of B we found (4 instead of 3)
-                else if (indexList.Count == 1 && s[indexList[0]] == letter)
-                {
-                    indexList.RemoveAt(0);
-                    indexList.Add(i);
-                }
-                else if (indexList.Count == 2 && s[indexList[0]] == letter && canSkipSecond && s[indexList[0]] == s[indexList[1]])
-                {
-                    indexList.RemoveAt(0);
-                    indexList.Add(i);
-                }
-                else if (indexList.Count == 2 && s[indexList[1]] == letter && canSkipSecond)
-                {
-                    indexList.RemoveAt(1);
-                    indexList.Add(i);
-                }
-                else if (indexList.Count > 1 && letter == s[indexList[0]])
-                {
-                    canSkipSecond = false;
-                    continue;
+                    slide.Add(i);
+                    pats.Remove(letter);
+
+                    if (pats.Count == 0)
+                    {
+                        startIndex = slide.First();
+                        endIndex = i;
+                    }
                 }
                 else
                 {
-                    continue;
+                    pats[letter] -= 1;
+                    slide.Add(i);
+
+                    if (!window.TryAdd(letter, [i]))
+                    {
+                        window[letter].Add(i);
+                    }
                 }
-
-                if (patterns.Length != 0)
-                {
-                    continue;
-                }
-
-                // "ABC" found , nothing left ""
-
-                //[0,3,5]
-                var startIndex = indexList[0];
-                var lastIndex = indexList[^1];
-                // 0 - 5 => ADOBEC
-                var currentString = s.Substring(startIndex, lastIndex - startIndex + 1);
-                if (result.Length == 0 || currentString.Length < result.Length)
-                {
-                    result = currentString;
-                }
-
-                // set initial state
-                patterns = string.Copy(t);
-                // Remove second found - "B"
-                var secondIndex = indexList[1];
-                var secondLetter = s[secondIndex];
-                // new pattern set without B "AC"
-                patterns = patterns.Remove(patterns.IndexOf(secondLetter), 1);
-                canSkipSecond = true;
-                indexList.Clear();
-                indexList.Add(secondIndex);
-
-                i = secondIndex;
-
             }
 
+            if (startIndex == -1)
+            {
+                return result;
+            }
 
-            return result;
+            return s.Substring(startIndex, endIndex - startIndex + 1);
         }
     }
 }
+// result = window.Values.MinBy(x => x[0]).Aggregate(result, (current, x) => current + s.Substring(x[0], x[1] - x[0] + 1));
