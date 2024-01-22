@@ -48,70 +48,69 @@
                 return s.Contains(t[0], StringComparison.Ordinal) ? t[0].ToString() : result;
             }
 
-            var window = new Dictionary<char, List<int>>();
-            var z = t.GroupBy(c => c);
-            var pats = z.ToDictionary(g => g.Key, g => g.Count());
-            var charSet = pats.Keys.ToHashSet();
+            var foundCharsIndexes = new Dictionary<char, List<int>>();
+            var charsLeftToFound = t.GroupBy(c => c).ToDictionary(g => g.Key, g => g.Count());
+            var uniqChars = charsLeftToFound.Keys.ToHashSet();
             var startIndex = -1;
             var endIndex = -1;
 
-            var slide = new List<int>();
+            var slidingWindow = new List<int>();
 
             for (var i = 0; i < s.Length; i++)
             {
                 var letter = s[i];
 
-                if (!charSet.Contains(letter)) continue;
+                if (!uniqChars.Contains(letter)) continue;
 
-                var isAlreadyFound = pats.Count == 0 || !pats.TryGetValue(letter, out var count) || count == 0;
+                var isAlreadyFound = charsLeftToFound.Count == 0 || !charsLeftToFound.ContainsKey(letter);
 
                 if (isAlreadyFound)
                 {
-                    var firstLetterIndex = window[letter].First();
+                    var firstLetterIndex = foundCharsIndexes[letter].First();
 
-                    var needToCheck = slide.First() == firstLetterIndex;
+                    var needToCheck = slidingWindow.First() == firstLetterIndex;
 
-                    slide.Remove(firstLetterIndex);
-                    slide.Add(i);
+                    slidingWindow.Remove(firstLetterIndex);
+                    slidingWindow.Add(i);
 
                     if (needToCheck)
                     {
-                        var currentLength = i - slide.First() + 1;
+                        var currentLength = i - slidingWindow.First() + 1;
                         var resultLength = endIndex - startIndex + 1;
                         if (currentLength < resultLength)
                         {
-                            startIndex = slide.First();
+                            startIndex = slidingWindow.First();
                             endIndex = i;
                         }
                     }
 
-                    window[letter].RemoveAt(0);
-                    window[letter].Add(i);
+                    foundCharsIndexes[letter].RemoveAt(0);
+                    foundCharsIndexes[letter].Add(i);
                 }
-                else if (pats[letter] == 1)
+                else if (charsLeftToFound[letter] == 1)
                 {
-                    if (!window.TryAdd(letter, [i]))
+                    if (!foundCharsIndexes.TryAdd(letter, [i]))
                     {
-                        window[letter].Add(i);
+                        foundCharsIndexes[letter].Add(i);
                     }
 
-                    slide.Add(i);
-                    pats.Remove(letter);
+                    slidingWindow.Add(i);
+                    charsLeftToFound.Remove(letter);
 
-                    if (pats.Count == 0)
+                    if (charsLeftToFound.Count == 0)
                     {
-                        startIndex = slide.First();
+                        startIndex = slidingWindow.First();
                         endIndex = i;
                     }
                 }
                 else
                 {
-                    pats[letter] -= 1;
-                    slide.Add(i);
+                    charsLeftToFound[letter] -= 1;
+                    slidingWindow.Add(i);
 
-                    if (!window.TryAdd(letter, [i]))
+                    if (!foundCharsIndexes.TryAdd(letter, [i]))
                     {
-                        window[letter].Add(i);
+                        foundCharsIndexes[letter].Add(i);
                     }
                 }
             }
@@ -125,4 +124,3 @@
         }
     }
 }
-// result = window.Values.MinBy(x => x[0]).Aggregate(result, (current, x) => current + s.Substring(x[0], x[1] - x[0] + 1));

@@ -2,7 +2,7 @@ using LeetCodeApp.Solutions.SlidingWindow;
 
 namespace TestProject.Solutions.Medium;
 
-public class Solution76Tests2
+public class Solution76_ComplexTest
 {
     [Test]
     public void ComplexTest()
