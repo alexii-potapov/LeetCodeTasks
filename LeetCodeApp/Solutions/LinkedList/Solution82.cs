@@ -6,31 +6,29 @@
     // Input: head = [1,1,1,2,3]
     // Output: [2,3]
 
-    public static ListNode DeleteDuplicates(ListNode head)
+    public static ListNode? DeleteDuplicates(ListNode? head)
     {
-        if (head is null || head.next is null)
+        if (head?.next is null)
         {
             return head;
         }
 
-        ListNode result = new ListNode(val: 0, null);
+        ListNode result = new(val: 0, null);
         var sourceNode = result;
-        ListNode prevNode = null;
+        ListNode? prevNode = null;
 
-        ListNode curNode = head;
-
-        while (curNode != null)
+        while (head != null)
         {
-            if ((prevNode == null || curNode.val != prevNode.val)
+            if ((prevNode == null || head.val != prevNode.val)
                 &&
-            (curNode?.next == null || curNode.val != curNode.next.val))
+            (head.next == null || head.val != head.next.val))
             {
-                result.next = new ListNode(curNode.val);
+                result.next = new ListNode(head.val);
                 result = result.next;
             }
 
-            prevNode = curNode;
-            curNode = curNode.next;
+            prevNode = head;
+            head = head.next;
         }
 
 
@@ -41,8 +39,8 @@
     public class ListNode
     {
         public int val;
-        public ListNode next;
-        public ListNode(int val = 0, ListNode next = null)
+        public ListNode? next;
+        public ListNode(int val = 0, ListNode? next = null)
         {
             this.val = val;
             this.next = next;
