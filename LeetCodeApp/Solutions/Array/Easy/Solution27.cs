@@ -19,6 +19,7 @@ public class Solution27
             }
         }
 
+
         return nums.Length - count;
     }
 }
